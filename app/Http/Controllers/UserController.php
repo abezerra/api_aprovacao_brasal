@@ -20,40 +20,43 @@ class UserController extends Controller
     {
         $data = $request->all();
 
-        $query = \DB::select('select * from users where id = ' . $data['user_id'] . ' and password = ' . md5($data['password']) );
+        $senha =  md5($data['password']);
 
-        dd($query);
-    } 
+        $xpto = \DB::select("select * from BRASMOB.BRMOB_USUARIOS where usu_in_codigo = (460) and senha = ('". $senha  ."')");
+
+        return count($xpto);
+
+    }
 
     public function index(Request $request)
     {
         $data = $request->all();
         $results = array();
-        
+
         $conn = new Oci8(
             'oci:dbname=sarajevo.cocacola-bsb.com.br:1528/teste.*.db_recovery_;charset=UTF8',
             'BRASMOB',
             'BRASMOB'
         );
-        
-        $stmt = $conn->prepare("BEGIN BRMOB_ADM_ALCADA.GET_APROVACAOPEDIDO_(:cursor, " .  $data['user_id'] . " , " . $data['filial'] . "); END;");
-        
+
+        $stmt = $conn->prepare("BEGIN BRMOB_ADM_ALCADA.GET_APROVACAOPEDIDO_(:cursor, " . $data['user_id'] . " , " . $data['filial'] . "); END;");
+
         $stmt->bindParam(':cursor', $cursor, \PDO::PARAM_STMT);
-        
+
         $stmt->execute();
-        
+
         $cursor_stmt = new Statement($cursor, $conn, [
             \PDO::ATTR_CASE => \PDO::CASE_LOWER
         ]);
-        
+
         $cursor_stmt->execute();
-        
+
         foreach ($cursor_stmt->fetchAll(\PDO::FETCH_ASSOC) as $item) {
             array_push($results, $item);
         }
-        
+
         $conn->closeCursor($cursor);
-        return response()->json(['data' => $results], 300);
+        return response()->json(['data' => $results], 200);
     }
 
     /**
@@ -64,7 +67,7 @@ class UserController extends Controller
     public function create()
     {
         $data = [];
-        $content      = array(
+        $content = array(
             "en" => $data['message'] = 'Mensagem',
 
         );
@@ -139,7 +142,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -150,7 +153,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -161,7 +164,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -172,8 +175,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -184,7 +187,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
