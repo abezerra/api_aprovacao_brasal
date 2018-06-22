@@ -18,3 +18,6 @@ Route::get('/', function () {
 Route::post('users', 'UserController@index');
 Route::get('push', 'UserController@create');
 Route::post('login', 'UserController@login');
+Route::post('xpto', 'UserController@store');
+Route::get('allusers', 'UserController@allusers');
+Route::get('send_to_rapha', 'UserController@send_to_rapha');

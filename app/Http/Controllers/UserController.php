@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Berkayk\OneSignal\OneSignalClient;
+use Berkayk\OneSignal\OneSignalFacade;
 use Illuminate\Http\Request;
 use Yajra\Pdo\Oci8;
 use Yajra\Pdo\Oci8\Statement;
@@ -109,6 +111,7 @@ class UserController extends Controller
             'headings' => $heading,
             'subtitle' => $subtitle,
             'url' => $url,
+            'ios_badgeType' => 'Increase'
         );
 
         $fields = json_encode($fields);
@@ -129,12 +132,12 @@ class UserController extends Controller
         $response = curl_exec($ch);
         curl_close($ch);
 
-        PushNotification::create([
-            'heading' => $data['heading'],
-            'subtitle' => $data['subtitle'],
-            'message' => $data['message'],
-            'sended_by' => $data['sended_by'],
-        ]);
+//        PushNotification::create([
+//            'heading' => $data['heading'],
+//            'subtitle' => $data['subtitle'],
+//            'message' => $data['message'],
+//            'sended_by' => $data['sended_by'],
+//        ]);
 
         return $response;
     }
@@ -145,9 +148,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        //
+        \Log::info('rdgfbuysdjknfgiodsfgjoijdfkm');
     }
 
     /**
@@ -194,4 +197,78 @@ class UserController extends Controller
     {
         //
     }
+
+    public function getDevices(){
+        $app_id = "2f1eab2a-f178-4d37-ab42-a3d89d97f560";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/players?app_id=" . $app_id);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json',
+            'Authorization: Basic ZGJkNDAwMjYtZjMyZi00YTJhLTgyNWQtNzc1OTk0NGRlYmU2'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return $response;
+    }
+
+    public function allusers()
+    {
+        return $this->getDevices();
+    }
+
+
+    ///
+    ///
+    ///
+    ///
+    function sendMessage(){
+        $content = array(
+            "en" => 'English Message'
+        );
+
+        $fields = array(
+            'app_id' => "2f1eab2a-f178-4d37-ab42-a3d89d97f560",
+            'include_player_ids' => array("38da8f63-4f22-49cf-b174-b6c9d70390a6"),
+            'data' => array("foo" => "bar"),
+            'contents' => $content,
+            'ios_badgeType' => 'Increase',
+            'ios_badgeCount' => 1
+        );
+
+        $fields = json_encode($fields);
+        print("\nJSON sent:\n");
+        print($fields);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/notifications");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json; charset=utf-8',
+            'Authorization: Basic ZGJkNDAwMjYtZjMyZi00YTJhLTgyNWQtNzc1OTk0NGRlYmU2'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return $response;
+    }
+
+
+    public function send_to_rapha()
+    {
+
+        $response = $this->sendMessage();
+        $return["allresponses"] = $response;
+        $return = json_encode( $return);
+
+        print("\n\nJSON received:\n");
+        print($return);
+        print("\n");
+
+    }
+
+
 }

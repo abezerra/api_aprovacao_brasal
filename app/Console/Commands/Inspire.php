@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\UserController;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\DB;
 
 class Inspire extends Command
 {
@@ -28,6 +30,9 @@ class Inspire extends Command
      */
     public function handle()
     {
+        $uc = new UserController();
+        $send = $uc->create();
+        \Log::info('Inspire' . $send);
         $this->comment(PHP_EOL.Inspiring::quote().PHP_EOL);
     }
 }
