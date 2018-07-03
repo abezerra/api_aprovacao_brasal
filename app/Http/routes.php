@@ -21,3 +21,4 @@ Route::post('login', 'UserController@login');
 Route::post('xpto', 'UserController@store');
 Route::get('allusers', 'UserController@allusers');
 Route::get('send_to_rapha', 'UserController@send_to_rapha');
+Route::post('set_playerid', 'UserController@set_playerid');

@@ -132,13 +132,6 @@ class UserController extends Controller
         $response = curl_exec($ch);
         curl_close($ch);
 
-//        PushNotification::create([
-//            'heading' => $data['heading'],
-//            'subtitle' => $data['subtitle'],
-//            'message' => $data['message'],
-//            'sended_by' => $data['sended_by'],
-//        ]);
-
         return $response;
     }
 
@@ -217,11 +210,6 @@ class UserController extends Controller
         return $this->getDevices();
     }
 
-
-    ///
-    ///
-    ///
-    ///
     function sendMessage(){
         $content = array(
             "en" => 'English Message'
@@ -267,6 +255,16 @@ class UserController extends Controller
         print("\n\nJSON received:\n");
         print($return);
         print("\n");
+
+    }
+
+    public function set_playerid(Request $request)
+    {
+        $data = $request->all();
+        $data['player_id'] = '38da8f63-4f22-49cf-b174-b6c9d70390a6';
+        $data['user_id'] = 5;
+        \Log::info($data);
+        return \DB::table("BRASMOB.BRMOB_USUARIOS")->where("USU_IN_CODIGO", '=', $data['user_id'])->update(['player_id' => $data['player_id']]);
 
     }
 
