@@ -32,6 +32,6 @@ class Kernel extends ConsoleKernel
 
         })->everyMinute();
 
-        $schedule->job(\Log::info('rodou a mundiça aqui do scgdfgdfgdfheedule'))->everyMinute();
+        //$schedule->job(\Log::info('rodou a mundiça aqui do scgdfgdfgdfheedule'))->everyMinute();
     }
 }

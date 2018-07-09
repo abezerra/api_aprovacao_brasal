@@ -31,7 +31,7 @@ class Inspire extends Command
     public function handle()
     {
         $uc = new UserController();
-        $send = $uc->create();
+        $send = "cucucucuuc";//$uc->create();
         \Log::info('Inspire' . $send);
         $this->comment(PHP_EOL.Inspiring::quote().PHP_EOL);
     }
