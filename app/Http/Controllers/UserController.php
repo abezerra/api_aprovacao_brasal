@@ -274,6 +274,8 @@ class UserController extends Controller
 
         \DB::commit();
 
+        \Log::info($save);
+
         return $save;
     }
 
