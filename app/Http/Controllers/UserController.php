@@ -22,9 +22,13 @@ class UserController extends Controller
     {
         $data = $request->all();
 
-        $senha =  md5($data['password']);
 
-        $xpto = \DB::select("select * from BRASMOB.BRMOB_USUARIOS where usu_in_codigo = (460) and senha = ('". $senha  ."')");
+        $senha =  md5($data['password']);
+        $id = $data['user'];
+
+        // $xpto = \DB::select("select * from BRASMOB.BRMOB_USUARIOS where usu_in_codigo = (460) and senha = ('". $senha  ."')");
+
+          $xpto = \DB::select("select * from BRASMOB.BRMOB_USUARIOS where usu_in_codigo = ('". $id ."') and senha = ('". $senha  ."')");
 
         return count($xpto);
 
@@ -260,6 +264,7 @@ class UserController extends Controller
 
     public function set_playerid(Request $request)
     {
+        \Log::info($request);
         $data = $request->all();
         $data['player_id'] = '38da8f63-4f22-49cf-b174-b6c9d70390a6';
         $data['user_id'] = 5;
