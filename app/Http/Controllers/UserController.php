@@ -266,11 +266,16 @@ class UserController extends Controller
     {
         \Log::info($request);
         $data = $request->all();
-        $data['player_id'] = '38da8f63-4f22-49cf-b174-b6c9d70390a6';
-        $data['user_id'] = 5;
+        // $data['player_id'] = '38da8f63-4f22-49cf-b174-b6c9d70390a6';
+        // $data['user_id'] = 5;
         \Log::info($data);
         return \DB::table("BRASMOB.BRMOB_USUARIOS")->where("USU_IN_CODIGO", '=', $data['user_id'])->update(['player_id' => $data['player_id']]);
 
+    }
+
+    public function todos_usuarios()
+    {
+        return \DB::select("select * from BRASMOB.BRMOB_USUARIOS");
     }
 
 
