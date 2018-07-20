@@ -22,4 +22,4 @@ Route::post('xpto', 'UserController@store');
 Route::get('allusers', 'UserController@allusers');
 Route::get('todos_usuarios', 'UserController@todos_usuarios');
 Route::get('send_to_rapha', 'UserController@send_to_rapha');
-Route::put('set_playerid', 'UserController@set_playerid');
+Route::post('set_playerid', 'UserController@set_playerid');
